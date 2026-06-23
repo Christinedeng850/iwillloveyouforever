@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iwillloveyouforever.com</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>iwillloveyouforever.com</h1>
+        <p>Cherishing every moment together</p>
+    </header>
+
+    <nav class="nav">
+        <button class="active" data-tab="timeline">Timeline</button>
+        <button data-tab="memories">Memories</button>
+        <button data-tab="gallery">Gallery</button>
+        <button data-tab="settings">Settings</button>
+    </nav>
+
+    <main class="container">
+        <!-- Anniversary Card -->
+        <div class="anniversary-card">
+            <div class="anniversary-days" id="daysCount">--</div>
+            <div class="anniversary-label">Days Together</div>
+            <div class="anniversary-input" id="anniversaryInput" style="display:none;">
+                <input type="date" id="anniversaryDate">
+                <button onclick="saveAnniversary()">Set Anniversary</button>
+            </div>
+        </div>
+
+        <!-- Timeline View -->
+        <section id="timelineView">
+            <div class="add-form">
+                <h3>Record This Moment</h3>
+                <form id="momentForm">
+                    <div class="form-group">
+                        <label>Who's writing?</label>
+                        <div class="author-select">
+                            <label>
+                                <input type="radio" name="author" value="Me" checked>
+                                <span>Me</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="author" value="Boyfriend">
+                                <span>Boyfriend</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>What's on your mind?</label>
+                        <textarea id="momentText" placeholder="What happened today?" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload photos (optional)</label>
+                        <div class="image-upload" id="imageUpload">
+                            <div class="image-upload-item" onclick="triggerImageInput()">
+                                <span>+</span>
+                            </div>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
+                    </div>
+                    <button type="submit" class="submit-btn">Post Moment</button>
+                </form>
+            </div>
+
+            <div class="timeline" id="timeline"></div>
+        </section>
+
+        <!-- Memories View -->
+        <section id="memoriesView" style="display:none;">
+            <div class="memories-layout">
+                <div class="memories-stream-wrap">
+                    <div class="memories-stream-title">
+                        <h3>Beautiful Memories</h3>
+                        <button class="memories-upload-btn" onclick="toggleMemoryForm()">+ Add Memory</button>
+                    </div>
+
+                    <div class="memory-form" id="memoryForm">
+                        <label style="font-weight:600; color:var(--chocolate); margin-bottom:8px; display:block;">Add a beautiful memory</label>
+                        <div class="memory-date-input">
+                            <label>Date</label>
+                            <input type="date" id="memoryDateInput">
+                        </div>
+                        <div class="upload-area" onclick="document.getElementById('memoryFileInput').click()">
+                            <div>Click to upload photos</div>
+                            <div style="font-size:0.8rem; margin-top:4px; opacity:0.7;">You can upload multiple photos</div>
+                        </div>
+                        <input type="file" id="memoryFileInput" accept="image/*" multiple onchange="handleMemoryFiles(event)">
+                        <div class="upload-preview" id="memoryPreview"></div>
+                        <input type="text" id="memoryNoteInput" placeholder="A short note about this memory...">
+                        <button onclick="submitMemory()">Save Memory</button>
+                        <button class="cancel" onclick="toggleMemoryForm()">Cancel</button>
+                    </div>
+
+                    <div class="memories-stream" id="memoriesStream"></div>
+                </div>
+
+                <div class="calendar-wrap">
+                    <div class="calendar-header">
+                        <span class="calendar-month-year" id="calendarMonthYear"></span>
+                        <div class="calendar-nav">
+                            <button onclick="changeMonth(-1)">&#8249;</button>
+                            <button onclick="changeMonth(1)">&#8250;</button>
+                        </div>
+                    </div>
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery View -->
+        <section id="galleryView" style="display:none;">
+            <div class="gallery" id="gallery"></div>
+        </section>
+
+        <!-- Settings View -->
+        <section id="settingsView" style="display:none;">
+            <div class="add-form">
+                <h3>Settings</h3>
+                <div class="form-group">
+                    <label>Our Names</label>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="name1" placeholder="Your name" style="flex:1; padding:10px; border:2px solid var(--border); border-radius:10px;">
+                        <input type="text" id="name2" placeholder="Partner's name" style="flex:1; padding:10px; border:2px solid var(--border); border-radius:10px;">
+                    </div>
+                    <button onclick="saveNames()" style="width:100%; padding:10px; background:var(--mint-dark); color:white; border:none; border-radius:25px; cursor:pointer;">Save Names</button>
+                </div>
+                <div class="form-group">
+                    <label>Set Anniversary</label>
+                    <input type="date" id="anniversaryDateSettings" style="width:100%; padding:10px; border:2px solid var(--border); border-radius:10px;">
+                    <button onclick="saveAnniversaryFromSettings()" style="width:100%; padding:10px; margin-top:10px; background:var(--mint-dark); color:white; border:none; border-radius:25px; cursor:pointer;">Save Anniversary</button>
+                </div>
+                <div class="form-group">
+                    <button onclick="exportData()" style="width:100%; padding:10px; background:var(--chocolate-light); color:white; border:none; border-radius:25px; cursor:pointer; margin-bottom:10px;">Export Data</button>
+                    <button onclick="importData()" style="width:100%; padding:10px; background:var(--text-light); color:white; border:none; border-radius:25px; cursor:pointer;">Import Data</button>
+                    <input type="file" id="importInput" accept=".json" style="display:none" onchange="handleImport(event)">
+                </div>
+                <div class="form-group">
+                    <button onclick="clearAllData()" style="width:100%; padding:10px; background:#8D6E63; color:white; border:none; border-radius:25px; cursor:pointer;">Clear All Data</button>
+                </div>
+                <div class="form-group">
+                    <button onclick="logout()" style="width:100%; padding:10px; background:#FF6B6B; color:white; border:none; border-radius:25px; cursor:pointer;">Logout</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <button class="modal-close" onclick="closeModal()">&#215;</button>
+        <img id="modalImage" src="" alt="">
+    </div>
+
+    <!-- Password Protection Overlay -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-container">
+            <h2>&#128150; Welcome to Our Secret Space</h2>
+            <p>Enter the password to access our love diary</p>
+            <input type="password" id="passwordInput" placeholder="Enter password..." onkeypress="if(event.key === 'Enter') checkPassword()">
+            <button onclick="checkPassword()">Unlock</button>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
