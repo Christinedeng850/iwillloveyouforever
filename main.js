@@ -65,7 +65,6 @@ function switchTab(tab) {
     if (tab === 'settings') loadSettingsToForm();
 }
 
-// ==================== TIMELINE ====================
 function renderTimeline() {
     const timeline = document.getElementById('timeline');
     if (moments.length === 0) {
@@ -207,7 +206,6 @@ function addComment(index) {
     renderTimeline();
 }
 
-// ==================== MEMORIES ====================
 function toggleMemoryForm() {
     const form = document.getElementById('memoryForm');
     form.classList.toggle('active');
@@ -301,7 +299,6 @@ function renderMemories(filterDate) {
     `).join('');
 }
 
-// ==================== CALENDAR ====================
 function renderCalendar() {
     const year = currentCalendarDate.getFullYear();
     const month = currentCalendarDate.getMonth();
@@ -362,7 +359,6 @@ function onCalendarClick(dateStr, hasPhoto) {
     }
 }
 
-// ==================== GALLERY ====================
 function renderGallery() {
     const gallery = document.getElementById('gallery');
     const allImages = [];
@@ -386,7 +382,6 @@ function renderGallery() {
     `).join('');
 }
 
-// ==================== ANNIVERSARY ====================
 function updateAnniversary() {
     const daysEl = document.getElementById('daysCount');
     const inputEl = document.getElementById('anniversaryInput');
@@ -414,7 +409,6 @@ function saveAnniversaryFromSettings() {
     if (date) { settings.anniversary = date; saveData(); updateAnniversary(); alert('Anniversary saved!'); }
 }
 
-// ==================== SETTINGS ====================
 function loadSettings() {
     if (settings.names) {
         document.title = `iwillloveyouforever.com - ${settings.names[0]} & ${settings.names[1]}`;
@@ -438,7 +432,6 @@ function saveNames() {
     }
 }
 
-// ==================== EXPORT / IMPORT ====================
 function exportData() {
     const data = { moments, settings, memories, exportDate: new Date().toISOString() };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -495,7 +488,6 @@ function clearAllData() {
     }
 }
 
-// ==================== MODAL ====================
 function openModal(src) {
     document.getElementById('modalImage').src = src;
     document.getElementById('imageModal').classList.add('active');
@@ -503,7 +495,6 @@ function openModal(src) {
 
 function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
 
-// ==================== UTILITIES ====================
 function saveData() {
     localStorage.setItem('coupleMoments', JSON.stringify(moments));
     localStorage.setItem('coupleSettings', JSON.stringify(settings));
